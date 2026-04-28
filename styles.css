@@ -154,7 +154,9 @@ nav {
 
 nav.scrolled {
   background: rgba(8, 8, 8, 0.85);
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
+  filter: blur(8px);
   border-color: var(--border);
 }
 
@@ -357,6 +359,8 @@ nav.menu-open .nav-toggle span:nth-child(3) {
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
   pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
   user-select: none;
   white-space: nowrap;
 }
@@ -822,8 +826,6 @@ section {
   letter-spacing: 0.08em;
 }
 
-.project-info {
-}
 
 .project-name {
   font-size: 1.6rem;
@@ -1271,10 +1273,9 @@ textarea:focus-visible {
     display: inline-flex;
     width: 40px;
     height: 40px;
-    border-color: var(--accent);
-    background: var(--accent);
-    box-shadow: 0 0 0 1px rgba(240, 80, 80, 0.18);
-    color: #080808;
+    border-color: var(--bg);
+    background: var(--bg);
+    color: var(--text);
   }
 
   .nav-links {
@@ -1344,7 +1345,7 @@ textarea:focus-visible {
   }
 
   .hero {
-    min-height: auto;
+    min-height: 0;
     padding-bottom: 4rem;
   }
 
