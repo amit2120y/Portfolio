@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio — Amit</title>
+    <meta name="description"
+        content="Amit Kumar's portfolio featuring software projects, education, skills, experience, and contact details.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -16,39 +18,68 @@
 <body>
 
     <div class="grid-bg"></div>
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+    <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
 
     <!-- NAV -->
     <nav id="nav">
-        <a href="#" class="nav-logo">Amit<span>.</span></a>
-        <div class="nav-links">
+        <a href="#home" class="nav-logo">Amit<span>.</span></a>
+        <div class="nav-links" id="navLinks">
             <a href="#education">Education</a>
             <a href="#work">Work</a>
+            <a href="#experience">Experience</a>
             <a href="#about">About</a>
             <a href="#skills">Skills</a>
             <a href="#contact">Contact</a>
+            <button type="button" class="theme-toggle theme-toggle-mobile" data-theme-toggle
+                aria-label="Toggle colour theme" title="Toggle theme">
+                <svg class="icon-moon" viewBox="0 0 24 24">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                </svg>
+                <svg class="icon-sun" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+                <span class="theme-toggle-text">Theme</span>
+            </button>
         </div>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle colour theme" title="Toggle theme">
-            <!-- Moon icon (shown in dark mode) -->
-            <svg class="icon-moon" viewBox="0 0 24 24">
-                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-            </svg>
-            <!-- Sun icon (shown in light mode) -->
-            <svg class="icon-sun" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="5" />
-                <line x1="12" y1="1" x2="12" y2="3" />
-                <line x1="12" y1="21" x2="12" y2="23" />
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                <line x1="1" y1="12" x2="3" y2="12" />
-                <line x1="21" y1="12" x2="23" y2="12" />
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-            </svg>
-        </button>
+        <div class="nav-actions">
+            <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks"
+                aria-label="Open navigation" title="Open navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <button type="button" class="theme-toggle theme-toggle-desktop" id="themeToggle" data-theme-toggle
+                aria-label="Toggle colour theme" title="Toggle theme">
+                <!-- Moon icon (shown in dark mode) -->
+                <svg class="icon-moon" viewBox="0 0 24 24">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                </svg>
+                <!-- Sun icon (shown in light mode) -->
+                <svg class="icon-sun" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+            </button>
+        </div>
     </nav>
 
+    <main>
     <!-- HERO -->
     <section class="hero" id="home">
         <div class="hero-bg-number">01</div>
@@ -123,7 +154,7 @@
     </div>
 
     <!-- EDUCATION -->
-    <section id="education" style="background: var(--surface); border-top: 1px solid var(--border);">
+    <section id="education" class="section-alt">
         <div class="section-label reveal">Education</div>
         <div class="education-list">
 
@@ -179,7 +210,7 @@
 
         <div class="projects-list">
 
-            <a href="#" class="project-item reveal">
+            <a href="#contact" class="project-item reveal" aria-label="Food Loss Mitigation, request a demo">
                 <div class="project-num">01</div>
                 <div class="project-info">
                     <div class="project-name">Food Loss Mitigation (Ongoing)</div>
@@ -228,7 +259,7 @@
                 <div class="project-arrow">↗</div>
             </a>
 
-            <a href="#" class="project-item reveal">
+            <a href="#home" class="project-item reveal" aria-label="Back to the portfolio home section">
                 <div class="project-num">04</div>
                 <div class="project-info">
                     <div class="project-name">Portfolio</div>
@@ -305,7 +336,7 @@
     </section>
 
     <!-- ABOUT -->
-    <section id="about" style="background: var(--surface); border-top: 1px solid var(--border);">
+    <section id="about" class="section-alt">
         <div class="section-label reveal">About Me</div>
         <div class="about-grid">
             <div>
@@ -318,30 +349,30 @@
             </div>
             <div class="about-right">
                 <p class="about-text reveal">
-                    I'm a Software developer with 5+ years building
-                    products that solve real problems. I care about the
-                    details — from database schema design to pixel-level
-                    UI polish. Every line of code is a decision.
+                    I'm a computer science student and software developer building
+                    practical web products, portfolio projects, and interactive tools.
+                    I care about the details — from clean backend logic to polished,
+                    responsive interfaces that feel good to use.
                 </p>
-                <p class="about-text reveal" style="margin-bottom: 3rem;">
-                    Previously at startups and agencies across three continents.
-                    Now working independently with select clients on projects
-                    that challenge me technically and creatively.
+                <p class="about-text about-text-spaced reveal">
+                    Most of my recent work sits at the intersection of coursework,
+                    independent builds, and freelance collaboration. I enjoy projects
+                    that teach me something new and leave the final experience faster,
+                    clearer, and more thoughtful than it started.
                 </p>
                 <a href="Amit'cv.pdf" class="btn btn-primary reveal" download>Download CV</a>
-                <br><br>
                 <div class="about-stats reveal">
                     <div class="stat">
                         <div class="stat-num">3<span>+</span></div>
-                        <div class="stat-label">Years experience</div>
+                        <div class="stat-label">Years learning</div>
                     </div>
                     <div class="stat">
                         <div class="stat-num">10<span>+</span></div>
-                        <div class="stat-label">Projects made</div>
+                        <div class="stat-label">Projects built</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-num">1<span>+</span></div>
-                        <div class="stat-label">Happy clients</div>
+                        <div class="stat-num">4</div>
+                        <div class="stat-label">Core stacks</div>
                     </div>
                     <div class="stat">
                         <div class="stat-num">∞</div>
@@ -366,9 +397,8 @@
                     </svg>
                 </div>
                 <div class="skill-name">Frontend</div>
-                <div class="skill-items">React / Next.js<br>TypeScript<br>Animation (GSAP, Framer)<br>Tailwind
-                    CSS<br>Testing
-                    (Jest, Cypress)</div>
+                <div class="skill-items">HTML / CSS / JavaScript<br>Responsive layouts<br>Accessible interactions<br>UI
+                    animation basics<br>Vercel deployment</div>
             </div>
 
             <div class="skill-card reveal" data-num="02">
@@ -380,10 +410,8 @@
                     </svg>
                 </div>
                 <div class="skill-name">Backend</div>
-                <div class="skill-items">Python (Flask, Django)<br>Node.js / Express<br>GraphQL / REST<br>PostgreSQL /
-                    MongoDB / MySQL<br>Redis /
-                    BullMQ<br>Prisma
-                    / Drizzle</div>
+                <div class="skill-items">Node.js / Express<br>Python / Flask<br>REST APIs<br>MongoDB / MySQL /
+                    Firebase<br>Authentication and forms</div>
             </div>
 
             <div class="skill-card reveal" data-num="03">
@@ -397,7 +425,8 @@
                     </svg>
                 </div>
                 <div class="skill-name">AI & Machine Learning</div>
-                <div class="skill-items">Python (Scikit-Learn, PyTorch)<br>Regression, Classification, Clustering<br>Neural Networks, CNNs<br>LLM Integration, Prompt Engineering<br>Pandas / NumPy / Matplotlib</div>
+                <div class="skill-items">Python notebooks<br>Pandas / NumPy<br>Scikit-Learn basics<br>Data cleaning and
+                    visualization<br>Model experimentation</div>
             </div>
 
             <div class="skill-card reveal" data-num="04">
@@ -408,9 +437,8 @@
                     </svg>
                 </div>
                 <div class="skill-name">Infrastructure</div>
-                <div class="skill-items">Git,GitHub <br>AWS / Vercel / Fly.io <br>Firebase<br>Docker / Kubernetes<br>CI/CD
-                    Pipelines<br>Nginx /
-                    Caddy<br>Monitoring & Logging</div>
+                <div class="skill-items">Git / GitHub<br>Vercel / Firebase<br>Environment setup<br>Deployment
+                    debugging<br>Performance tuning</div>
             </div>
 
         </div>
@@ -422,23 +450,22 @@
         <div class="education-list">
             <div class="education-item reveal">
                 <div class="education-header">
-                    <h3 class="education-title">Freelance Developer</h3>
+                    <h3 class="education-title">Independent Developer</h3>
                     <span class="education-year">2023 - Present</span>
                 </div>
-                <p class="education-institution">Self-Employed</p>
-                <p class="education-description">Designing and developing responsive, high-performance applications.
-                    Collaborating with clients to translate their requirements into scalable solutions using modern
-                    technologies.</p>
+                <p class="education-institution">Personal builds and freelance collaboration</p>
+                <p class="education-description">Building portfolio projects, academic tools, and small web experiences
+                    with HTML, CSS, JavaScript, Node.js, Flask, Firebase, and MongoDB. Focusing on fast interfaces,
+                    clean implementation, and dependable deployment.</p>
             </div>
             <div class="education-item reveal">
                 <div class="education-header">
-                    <h3 class="education-title">Frontend Developer Intern</h3>
-                    <span class="education-year">2022 - 2023</span>
+                    <h3 class="education-title">University Project Contributor</h3>
+                    <span class="education-year">2023 - Present</span>
                 </div>
-                <p class="education-institution">Tech Agency</p>
-                <p class="education-description">Assisted in building user interfaces and implementing interactive
-                    features for various client projects. Gained hands-on experience in HTML, CSS, JavaScript, and agile
-                    development practices.</p>
+                <p class="education-institution">Central University of Rajasthan</p>
+                <p class="education-description">Helped ship web experiences for university fests and academic demos,
+                    with attention to frontend polish, registration flows, backend wiring, and launch-day fixes.</p>
             </div>
         </div>
     </section>
@@ -449,17 +476,17 @@
 
         <div class="contact-container">
             <div class="contact-left">
-                <a href="mailto:hello@yourname.dev" class="contact-big reveal">
+                <a href="mailto:mamit264448@gmail.com" class="contact-big reveal">
                     Let's work<br><span>together.</span>
                 </a>
                 <div class="contact-links reveal">
                     <a href="mailto:mamit264448@gmail.com" class="contact-link"><span class="dot"></span>Gmail</a>
-                    <a href="https://github.com/amit2120y" target="_blank" class="contact-link"><span
+                    <a href="https://github.com/amit2120y" target="_blank" rel="noopener noreferrer" class="contact-link"><span
                             class="dot"></span>
                         GitHub</a>
-                    <a href="https://www.linkedin.com/in/amit-kumar-ba993b1b3/" target="_blank"
+                    <a href="https://www.linkedin.com/in/amit-kumar-ba993b1b3/" target="_blank" rel="noopener noreferrer"
                         class="contact-link"><span class="dot"></span> LinkedIn</a>
-                    <a href="https://www.instagram.com/amit2120y/" target="_blank" class="contact-link"><span
+                    <a href="https://www.instagram.com/amit2120y/" target="_blank" rel="noopener noreferrer" class="contact-link"><span
                             class="dot"></span> Instagram</a>
                 </div>
             </div>
@@ -467,11 +494,11 @@
             <div class="contact-right reveal">
                 <form class="contact-form" action="https://formspree.io/f/meeppdvl" method="POST">
                     <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Your Name" class="form-input" required>
+                        <input type="text" id="name" name="name" placeholder="Your Name" class="form-input" autocomplete="name" required>
                     </div>
 
                     <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Your Email" class="form-input"
+                        <input type="email" id="email" name="email" placeholder="Your Email" class="form-input" autocomplete="email"
                             required>
                     </div>
 
@@ -485,10 +512,11 @@
             </div>
         </div>
     </section>
+    </main>
 
     <!-- FOOTER -->
     <footer>
-        <p>© 2025 — Crafted with intent</p>
+        <p>© <span id="currentYear">2026</span> — Crafted with intent</p>
         <p>Based in India · Available worldwide</p>
     </footer>
 

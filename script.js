@@ -1,88 +1,192 @@
-// ── Theme toggle ──────────────────────────────────────
 const htmlEl = document.documentElement;
-const themeBtn = document.getElementById('themeToggle');
+const themeButtons = Array.from(document.querySelectorAll("[data-theme-toggle]"));
+const nav = document.getElementById("nav");
+const navToggle = document.getElementById("navToggle");
+const navLinks = document.getElementById("navLinks");
+const aboutTitle = document.getElementById("aboutTitle");
+const currentYear = document.getElementById("currentYear");
+const cursor = document.getElementById("cursor");
+const ring = document.getElementById("cursorRing");
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const supportsFinePointer = window.matchMedia("(pointer: fine)").matches;
 
-const applyTheme = (theme) => {
-    htmlEl.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+const storage = {
+    get(key) {
+        try {
+            return localStorage.getItem(key);
+        } catch (error) {
+            return null;
+        }
+    },
+    set(key, value) {
+        try {
+            localStorage.setItem(key, value);
+        } catch (error) {
+            // Ignore storage failures in restrictive browsing modes.
+        }
+    }
 };
 
-// Restore saved preference (default: dark)
-const savedTheme = localStorage.getItem('theme') || 'dark';
-applyTheme(savedTheme);
+const getPreferredTheme = () => {
+    const savedTheme = storage.get("theme");
 
-themeBtn.addEventListener('click', () => {
-    const current = htmlEl.getAttribute('data-theme');
-    applyTheme(current === 'light' ? 'dark' : 'light');
+    if (savedTheme === "light" || savedTheme === "dark") {
+        return savedTheme;
+    }
+
+    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+};
+
+const applyTheme = (theme) => {
+    htmlEl.setAttribute("data-theme", theme);
+    storage.set("theme", theme);
+
+    themeButtons.forEach((button) => {
+        const nextTheme = theme === "light" ? "dark" : "light";
+        button.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+        button.setAttribute("title", `Switch to ${nextTheme} theme`);
+        button.setAttribute("aria-pressed", String(theme === "light"));
+    });
+};
+
+const setMenuOpen = (isOpen) => {
+    if (!nav || !navToggle) {
+        return;
+    }
+
+    nav.classList.toggle("menu-open", isOpen);
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+    navToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+    navToggle.setAttribute("title", isOpen ? "Close navigation" : "Open navigation");
+};
+
+applyTheme(getPreferredTheme());
+
+themeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        const currentTheme = htmlEl.getAttribute("data-theme");
+        applyTheme(currentTheme === "light" ? "dark" : "light");
+    });
 });
 
-// Cursor
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
+if (currentYear) {
+    currentYear.textContent = String(new Date().getFullYear());
+}
 
-document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-});
+if (navToggle && navLinks) {
+    navToggle.addEventListener("click", () => {
+        const isOpen = navToggle.getAttribute("aria-expanded") === "true";
+        setMenuOpen(!isOpen);
+    });
 
-const lerp = (a, b, t) => a + (b - a) * t;
-(function animate() {
-    rx = lerp(rx, mx, 0.1);
-    ry = lerp(ry, my, 0.1);
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animate);
-})();
+    navLinks.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => setMenuOpen(false));
+    });
 
-document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
-});
-
-// Also expand cursor on the new toggle button (ensure it picks it up)
-themeBtn.addEventListener('mouseenter', () => cursor.classList.add('expand'));
-themeBtn.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
-
-// Nav scroll
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-});
-
-// Intersection observer
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            e.target.classList.add('visible');
-            observer.unobserve(e.target);
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            setMenuOpen(false);
         }
     });
-}, { threshold: 0.12 });
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// About title reveal
-const aboutObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            e.target.classList.add('visible');
+    document.addEventListener("click", (event) => {
+        if (nav.classList.contains("menu-open") && !nav.contains(event.target)) {
+            setMenuOpen(false);
         }
     });
-}, { threshold: 0.2 });
 
-const aboutTitle = document.getElementById('aboutTitle');
-if (aboutTitle) aboutObserver.observe(aboutTitle);
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 780) {
+            setMenuOpen(false);
+        }
+    });
+}
 
-// Stagger reveals
-const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            const siblings = e.target.parentElement.querySelectorAll('.reveal');
-            siblings.forEach((el, i) => {
-                setTimeout(() => el.classList.add('visible'), i * 100);
+const syncNavState = () => {
+    if (nav) {
+        nav.classList.toggle("scrolled", window.scrollY > 60);
+    }
+};
+
+syncNavState();
+window.addEventListener("scroll", syncNavState, { passive: true });
+
+if (supportsFinePointer && !prefersReducedMotion.matches && cursor && ring) {
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+
+    const lerp = (start, end, amount) => start + (end - start) * amount;
+
+    document.addEventListener("mousemove", (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+        cursor.classList.add("is-visible");
+        ring.classList.add("is-visible");
+        cursor.style.left = `${mouseX}px`;
+        cursor.style.top = `${mouseY}px`;
+    });
+
+    const animateCursor = () => {
+        ringX = lerp(ringX, mouseX, 0.14);
+        ringY = lerp(ringY, mouseY, 0.14);
+        ring.style.left = `${ringX}px`;
+        ring.style.top = `${ringY}px`;
+        window.requestAnimationFrame(animateCursor);
+    };
+
+    animateCursor();
+
+    document.querySelectorAll("a, button").forEach((element) => {
+        element.addEventListener("mouseenter", () => cursor.classList.add("expand"));
+        element.addEventListener("mouseleave", () => cursor.classList.remove("expand"));
+    });
+} else {
+    cursor?.remove();
+    ring?.remove();
+}
+
+const revealElements = Array.from(document.querySelectorAll(".reveal"));
+
+revealElements.forEach((element) => {
+    const revealSiblings = Array.from(element.parentElement?.children || []).filter((child) =>
+        child.classList?.contains("reveal")
+    );
+    const siblingIndex = revealSiblings.indexOf(element);
+    element.style.transitionDelay = `${Math.max(0, siblingIndex) * 80}ms`;
+});
+
+if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
+    revealElements.forEach((element) => element.classList.add("visible"));
+    aboutTitle?.classList.add("visible");
+} else {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12,
+        rootMargin: "0px 0px -8% 0px"
+    });
+
+    revealElements.forEach((element) => revealObserver.observe(element));
+
+    if (aboutTitle) {
+        const aboutObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target);
+                }
             });
-        }
-    });
-}, { threshold: 0.05 });
+        }, {
+            threshold: 0.25
+        });
+
+        aboutObserver.observe(aboutTitle);
+    }
+}
