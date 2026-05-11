@@ -156,7 +156,6 @@ nav.scrolled {
   background: rgba(8, 8, 8, 0.85);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  filter: blur(8px);
   border-color: var(--border);
 }
 
